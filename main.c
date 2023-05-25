@@ -35,6 +35,7 @@ int main(int ac, char **av)
 			execute(line, line_num);
 	}
 	fclose(file);
+	freeHolder(holder);
 	return (0);
 }
 /**
