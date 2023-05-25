@@ -15,7 +15,6 @@ void execute(char *line, int line_num)
 		if (strlen(cmd) < 7 && cmd[5] == 10)
 		{
 			fprintf(stderr, "L%d: usage: push integer\n", line_num);
-			free(cmd);
 			exit(EXIT_FAILURE);
 		}
 		if (isInteger(cmd + 5))
@@ -23,7 +22,6 @@ void execute(char *line, int line_num)
 		else
 		{
 			fprintf(stderr, "L%d: usage: push integer\n", line_num);
-			free(cmd);
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -38,10 +36,8 @@ void execute(char *line, int line_num)
 	if (i == 7)
 	{
 		fprintf(stderr, "L%d: unknown instruction %s\n", line_num, cmd);
-		free(cmd);
 		exit(EXIT_FAILURE);
 	}
-	free(cmd);
 }
 /**
  * getCommand - extracts the command from the line passed
@@ -50,15 +46,9 @@ void execute(char *line, int line_num)
  */
 char *getCommand(const char *line)
 {
-	char *command;
+	static char command[200];
 	int j = 0, i = 0;
 
-	command = malloc(200);
-	if (!command)
-	{
-		fprintf(stderr, "Error: malloc failed\n");
-		exit(EXIT_FAILURE);
-	}
 	while (line[i] != '\0' && line[i] == ' ')
 		i++;
 	if (line[i] == '\0')
