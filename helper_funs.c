@@ -12,16 +12,14 @@ void execute(char *line, int line_num)
 
 	if (strncmp(cmd, "push", 4) == 0)
 	{
-		if (strlen(cmd) < 7)
+		if (strlen(cmd) < 7 && cmd[5] == 10)
 		{
 			fprintf(stderr, "L%d: usage: push integer\n", line_num);
 			free(cmd);
 			exit(EXIT_FAILURE);
 		}
 		if (isInteger(cmd + 5))
-		{
 			holder.pushArg = atoi(cmd + 5);
-		}
 		else
 		{
 			fprintf(stderr, "L%d: usage: push integer\n", line_num);
@@ -29,7 +27,7 @@ void execute(char *line, int line_num)
 			exit(EXIT_FAILURE);
 		}
 	}
-	for (i = 0; i < 5; i++)
+	for (i = 0; i < 7; i++)
 	{
 		if (strncmp(cmd, holder.opfuns[i].opcode, 2) == 0)
 		{
@@ -37,7 +35,7 @@ void execute(char *line, int line_num)
 			break;
 		}
 	}
-	if (i == 5)
+	if (i == 7)
 	{
 		fprintf(stderr, "L%d: unknown instruction %s\n", line_num, cmd);
 		free(cmd);

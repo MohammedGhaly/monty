@@ -10,6 +10,7 @@ void push(stack_t **stack, unsigned int line_number)
 {
 	stack_t *new;
 
+	(void)line_number;
 	new = malloc(sizeof(stack_t));
 	if (new == NULL)
 	{
@@ -17,11 +18,11 @@ void push(stack_t **stack, unsigned int line_number)
 		exit(EXIT_FAILURE);
 	}
 	new->n = holder.pushArg;
-	new->next = *(holder.top);
+	new->next = *(stack);
 	new->prev = NULL;
 
-	if ((*(holder.top)) != NULL)
-		(*(holder.top))->prev = new;
+	if ((*(stack)) != NULL)
+		(*(stack))->prev = new;
 	*(holder.top) = new;
 }
 
@@ -35,6 +36,7 @@ void pall(stack_t **stack, unsigned int line_number)
 {
 	stack_t *current;
 
+	(void)line_number;
 	if (!stack)
 		return;
 	current = *(holder.top);
@@ -46,14 +48,20 @@ void pall(stack_t **stack, unsigned int line_number)
 }
 
 /**
- * pint - adds an element to the top of the stack
+ * pint - prints the element at the top of the stack
  * @stack: top element of the stack
  * @line_number: line number in the monty source file
  * Return: Success
  */
 void pint(stack_t **stack, unsigned int line_number)
 {
-		printf("I am pint\n");
+	if (*(stack) != NULL)
+		printf("%d\n", (*(stack))->n);
+	else
+	{
+		fprintf(stderr, "L%d: can't pint, stack empty\n", line_number);
+		exit(EXIT_FAILURE);
+	}
 }
 
 /**
@@ -64,7 +72,23 @@ void pint(stack_t **stack, unsigned int line_number)
  */
 void swap(stack_t **stack, unsigned int line_number)
 {
-		printf("I am swap\n");
+	stack_t *current;
+	stack_t *nxt;
+
+	if ((*stack == NULL) || (*stack)->next == NULL)
+	{
+		fprintf(stderr, "L%d: can't swap, stack too short\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	current = *stack;
+	nxt = current->next;
+
+	current->next = nxt->next;
+	nxt->next->prev = current;
+	nxt->prev = NULL;
+	nxt->next = current;
+
+	*stack = nxt;
 }
 
 /**
@@ -75,5 +99,17 @@ void swap(stack_t **stack, unsigned int line_number)
  */
 void pop(stack_t **stack, unsigned int line_number)
 {
-		printf("I am pop\n");
+	stack_t *current;
+
+	if (*stack == NULL)
+	{
+		fprintf(stderr, "L%d: can't pop an empty stack\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	current = *stack;
+
+	*stack = current->next;
+	if (current->next != NULL)
+		current->next->prev = NULL;
+	free(current);
 }

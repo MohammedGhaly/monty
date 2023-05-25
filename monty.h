@@ -50,7 +50,7 @@ typedef struct holder_s
 {
 		int pushArg;
 	stack_t **top;
-	instruction_t opfuns[5];
+	instruction_t opfuns[7];
 } holder_t;
 
 void push(stack_t **stack, unsigned int line_number);
@@ -58,13 +58,16 @@ void pall(stack_t **stack, unsigned int line_number);
 void pint(stack_t **stack, unsigned int line_number);
 void pop(stack_t **stack, unsigned int line_number);
 void swap(stack_t **stack, unsigned int line_number);
+void add(stack_t **stack, unsigned int line_number);
+void nop(stack_t **stack, unsigned int line_number);
 
 char *getCommand(const char *line);
 void execute(char *command, int line_num);
 int isInteger(char *str);
 void free_stack(stack_t *stack);
 void freeHolder(holder_t holder);
-
+int isempty(char *line);
+void initializeHolder();
 
 extern holder_t holder;
 
